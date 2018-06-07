@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+</head>
+<body>
+  {% if current_user.is_authenticated %}
+    Hi {{ current_user.name }}!
+  {% endif %}
+  <h1>Вот такой сайт!</h1>
+</body>
+</html>
