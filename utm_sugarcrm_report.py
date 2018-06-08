@@ -4,12 +4,15 @@ from forms import LoginForm
 from urllib.parse import urlparse, urljoin
 import logging
 
+
 from login_users import login_manager, get_user
 from settings import config
+from admin import create_admin
 
 
 app = flask.Flask(__name__)
 logging.debug('Создали app (app = Flask(__name__))')
+admin = create_admin(app)
 
 if 'APPLICATION' in config:
     app.secret_key = config['APPLICATION'].get(

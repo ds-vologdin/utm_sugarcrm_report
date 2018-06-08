@@ -46,7 +46,7 @@ class UsersReport(Base):
     name = Column(String(200))
     email = Column(String(200))
 
-    def __init__(self, login, password, name, email):
+    def __init__(self, login='None', password='None', name=None, email=None):
         self.login = login
         self.password = pbkdf2_sha256.hash(password)
         self.name = name
