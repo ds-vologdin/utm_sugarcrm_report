@@ -17,7 +17,6 @@ if 'APPLICATION' in config:
         'aileechaiPh5ooDia9cioj2leibohsohque2Eim1aiJeetee3e'
     )
 login_manager.init_app(app)
-print(app.config)
 
 
 def is_safe_url(target):
@@ -41,7 +40,7 @@ def login():
         user = get_user(login, password)
         if not user:
             logging.warning(
-                'Не удачная попытка авторизоваться: {}'.format(login)
+                'Не удачная попытка авторизоваться (login: {})'.format(login)
             )
             return flask.render_template(
                 'login.html',
@@ -70,7 +69,7 @@ def protected():
 @app.route('/logout')
 def logout():
     flask_login.logout_user()
-    return 'Logged out'
+    return flask.redirect(flask.url_for('index'))
 
 
 @app.route('/')

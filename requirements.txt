@@ -5,3 +5,4 @@ SQLAlchemy==1.2.7
 psycopg2==2.7.4
 psycopg2-binary==2.7.4
 alembic==0.9.9
+passlib==1.7.1

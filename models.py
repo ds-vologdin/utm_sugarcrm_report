@@ -4,6 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 from flask import json
 import logging
+from passlib.hash import pbkdf2_sha256
 
 from settings import config
 
@@ -22,7 +23,7 @@ engine = create_engine(
         default_db['HOST'], default_db['PORT'], default_db['DB']
     ),
     json_serializer=json.dumps,
-    echo=False,
+    echo=True,
 )
 logging.debug('Создали engine')
 session_factory = sessionmaker(bind=engine)
@@ -40,13 +41,16 @@ logging.debug('Создали Base')
 class UsersReport(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
-    login = Column(String(20), unique=True)
-    password = Column(String(20), unique=True)
+    login = Column(String(20), unique=True, nullable=False)
+    password = Column(String(100), nullable=False)
     name = Column(String(200))
     email = Column(String(200))
 
     def __init__(self, login, password, name, email):
         self.login = login
-        self.password = password
+        self.password = pbkdf2_sha256.hash(password)
         self.name = name
         self.email = email
+
+    def __repr__(self):
+        return '<UsersReport: id({}) login({})>'.format(self.id, self.login)

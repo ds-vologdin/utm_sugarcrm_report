@@ -1,10 +1,8 @@
 import flask_login
+from passlib.hash import pbkdf2_sha256
+import logging
 
-
-# Our mock database.
-users = {
-    'admin': {'password': 'admin', 'name': 'Vasya', 'email': 'vasya@mail.ru'}
-}
+from models import UsersReport
 
 
 login_manager = flask_login.LoginManager()
@@ -16,43 +14,53 @@ class User(flask_login.UserMixin):
 
 @login_manager.user_loader
 def user_loader(login):
-    if login not in users:
-        return
+    logging.debug('user_loader')
+    user_report = UsersReport.query.filter(UsersReport.login == login).first()
+    if not user_report:
+        return None
     user = User()
-    user.id = login
-    user.login = login
-    user.name = users.get(login).get('name')
-    user.email = users.get(login).get('email')
+    user.id = user_report.login
+    user.login = user_report.login
+    user.name = user_report.name
+    user.email = user_report.email
     return user
 
 
 @login_manager.request_loader
 def request_loader(request):
+    logging.debug('request_loader')
     login = request.form.get('login')
-    if login not in users:
-        return
-
+    password = request.form.get('password')
+    user_report = UsersReport.query.filter(UsersReport.login == login).first()
+    if not user_report:
+        return None
+    if not verify_password(password, user_report.password):
+        return None
     user = User()
-    user.id = login
+    user.id = user_report.login
+    user.login = user_report.login
+    user.name = user_report.name
+    user.email = user_report.email
 
-    # DO NOT ever store passwords in plaintext and always compare password
-    # hashes using constant-time comparison!
-    user.is_authenticated = (
-        request.form['password'] == users[login]['password']
-    )
     return user
+
+
+def verify_password(password, hash):
+    return pbkdf2_sha256.verify(password, hash)
 
 
 def get_user(login, password):
     if not (login and password):
         return None
-    if login not in users:
+    user_report = UsersReport.query.filter(UsersReport.login == login).first()
+    print(user_report)
+    if not user_report:
         return None
-    if password != users[login]['password']:
+    if not verify_password(password, user_report.password):
         return None
     user = User()
-    user.id = login
-    user.login = login
-    user.name = users.get(login).get('name')
-    user.email = users.get(login).get('email')
+    user.id = user_report.login
+    user.login = user_report.login
+    user.name = user_report.name
+    user.email = user_report.email
     return user
