@@ -9,6 +9,7 @@ from settings import config
 
 
 app = flask.Flask(__name__)
+logging.debug('Создали app (app = Flask(__name__))')
 
 if 'APPLICATION' in config:
     app.secret_key = config['APPLICATION'].get(
@@ -16,6 +17,7 @@ if 'APPLICATION' in config:
         'aileechaiPh5ooDia9cioj2leibohsohque2Eim1aiJeetee3e'
     )
 login_manager.init_app(app)
+print(app.config)
 
 
 def is_safe_url(target):
