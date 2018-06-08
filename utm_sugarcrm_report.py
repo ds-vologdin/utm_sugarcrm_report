@@ -2,13 +2,19 @@ import flask
 import flask_login
 from forms import LoginForm
 from urllib.parse import urlparse, urljoin
+import logging
 
 from login_users import login_manager, get_user
+from settings import config
 
 
 app = flask.Flask(__name__)
-# Change this!
-app.secret_key = 'aileechaiPh5ooDia9cioj2leibohsohque2Eim1aiJeetee3e'
+
+if 'APPLICATION' in config:
+    app.secret_key = config['APPLICATION'].get(
+        'SECRET',
+        'aileechaiPh5ooDia9cioj2leibohsohque2Eim1aiJeetee3e'
+    )
 login_manager.init_app(app)
 
 
@@ -32,6 +38,9 @@ def login():
         password = flask.request.form['password']
         user = get_user(login, password)
         if not user:
+            logging.warning(
+                'Не удачная попытка авторизоваться: {}'.format(login)
+            )
             return flask.render_template(
                 'login.html',
                 form=form,
