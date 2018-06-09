@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 from flask import json
@@ -45,6 +45,7 @@ class UsersReport(Base):
     password = Column(String(100), nullable=False)
     name = Column(String(200))
     email = Column(String(200))
+    superuser = Column(Boolean, nullable=False, default=False)
 
     def __init__(self, login='None', password='None', name=None, email=None):
         self.login = login
