@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-</head>
-<body>
-  {% if current_user.is_authenticated %}
-    Hi {{ current_user.name }}!
-  {% endif %}
-  <h1>Вот такой сайт!</h1>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block main %}
+<div class="main_block">
+  <div class="text-center">Ты властелин своей судьбы - да будет так!</div>
+  <div class="text-center">Только предупреди об этом инсульт и рак...</div>
+</div>
+{% endblock main %}

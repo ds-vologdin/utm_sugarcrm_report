@@ -31,16 +31,22 @@ def is_safe_url(target):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    logging.debug('login url: {} {} {}'.format(
+        flask.request.url, flask.request.method, flask.request.data
+    ))
+    logging.debug('login form: {}'.format(flask.request.form))
     # Here we use a class of some kind to represent and validate our
     # client-side form data. For example, WTForms is a library that will
     # handle this for us, and we use a custom LoginForm to validate.
     form = LoginForm()
     if form.validate_on_submit():
+        logging.debug('login submited')
         # Login and validate the user.
         # user should be an instance of your `User` class
         login = flask.request.form['login']
         password = flask.request.form['password']
         user = get_user(login, password)
+        logging.debug('login user: {}'.format(user))
         if not user:
             logging.warning(
                 'Не удачная попытка авторизоваться (login: {})'.format(login)
@@ -72,10 +78,11 @@ def protected():
 @app.route('/logout')
 def logout():
     flask_login.logout_user()
-    return flask.redirect(flask.url_for('index'))
+    return flask.redirect(flask.url_for('login'))
 
 
 @app.route('/')
+@flask_login.login_required
 def index():
     return flask.render_template(
         'index.html', current_user=flask_login.current_user

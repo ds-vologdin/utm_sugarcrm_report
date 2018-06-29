@@ -6,6 +6,7 @@ from models import UsersReport
 
 
 login_manager = flask_login.LoginManager()
+login_manager.login_view = 'login'
 
 
 class User(flask_login.UserMixin):
