@@ -2,16 +2,22 @@ import flask
 import flask_login
 from forms import LoginForm
 from urllib.parse import urlparse, urljoin
-import logging
+from logging import getLogger
 
 
 from login_users import login_manager, get_user
 from settings import config
 from admin import create_admin
+from utmbill import utmbill
 
+
+logger = getLogger(__name__)
 
 app = flask.Flask(__name__)
-logging.debug('Создали app (app = Flask(__name__))')
+logger.debug('Создали app (app = Flask(__name__))')
+app.register_blueprint(utmbill)
+logger.debug('Создали Blueprint utm_bill_blueprint {}'.format(utmbill))
+
 admin = create_admin(app)
 
 if 'APPLICATION' in config:
@@ -31,24 +37,21 @@ def is_safe_url(target):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    logging.debug('login url: {} {} {}'.format(
+    logger.debug('login url: {} {} {}'.format(
         flask.request.url, flask.request.method, flask.request.data
     ))
-    logging.debug('login form: {}'.format(flask.request.form))
     # Here we use a class of some kind to represent and validate our
     # client-side form data. For example, WTForms is a library that will
     # handle this for us, and we use a custom LoginForm to validate.
     form = LoginForm()
     if form.validate_on_submit():
-        logging.debug('login submited')
         # Login and validate the user.
         # user should be an instance of your `User` class
         login = flask.request.form['login']
         password = flask.request.form['password']
         user = get_user(login, password)
-        logging.debug('login user: {}'.format(user))
         if not user:
-            logging.warning(
+            logger.warning(
                 'Не удачная попытка авторизоваться (login: {})'.format(login)
             )
             return flask.render_template(
@@ -87,6 +90,7 @@ def index():
     return flask.render_template(
         'index.html', current_user=flask_login.current_user
     )
+
 
 if __name__ == '__main__':
     app.run(debug=True)

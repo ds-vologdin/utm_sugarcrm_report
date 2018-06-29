@@ -3,48 +3,36 @@ import configparser
 import logging
 
 
-def convert_str_to_logging_level(level_str=None):
-    if level_str == 'DEBUG':
-        return logging.DEBUG
-    if level_str == 'INFO':
-        return logging.INFO
-    if level_str == 'WARNING':
-        return logging.WARNING
-    if level_str == 'ERROR':
-        return logging.ERROR
-    if level_str == 'CRITICAL':
-        return logging.CRITICAL
-    # Значение по умолчанию
-    return logging.WARNING
+def convert_str_to_logging_level(level_str):
+    level = {
+        'debug': logging.DEBUG,
+        'info': logging.INFO,
+        'warning': logging.WARNING,
+        'error': logging.ERROR,
+        'critical': logging.CRITICAL
+    }
+    return level.get(level_str.lower(), logging.WARNING)
+
+
+def get_all_parameters_in_section_from_config(config, section):
+    if section not in config:
+        return {}
+    return {
+        key.upper(): config[section][key] for key in config[section]
+    }
 
 
 def parse_config_section_base(config=None):
-    if not config:
-        return {}
-    if 'FLASK_DB' not in config:
-        return {}
-
     databases = {
-        'default': {
-            key.upper(): config['FLASK_DB'][key]
-            for key in config['FLASK_DB']
-        }
-    }
-    # Эта секция приведена для примера, как расширять конфиг
-    # Можно разделить TEST БД и PROD БД
-    # if 'TEST_DB' not in config:
-    #     databases.update({
-    #         'test': {
-    #             key.upper(): config['TEST_DB'][key]
-    #             for key in config['TEST_DB']
-    #         }
-    #     })
+        'default': get_all_parameters_in_section_from_config(
+            config, 'FLASK_DB'
+        ),
+        'utm': get_all_parameters_in_section_from_config(config, 'UTM_DB')
+     }
     return databases
 
 
 def parse_config_section_logging(config=None):
-    if not config:
-        return {}
     logging_config = {}
     if 'LOGGING' not in config:
         return {}
@@ -103,6 +91,6 @@ if logging_config:
     logging.basicConfig(
         filename=logging_config.get('FILE'),
         level=logging_config.get('LEVEL'),
-        format='%(asctime)s:%(levelname)s:%(message)s'
+        format='%(asctime)s:%(name)s %(levelname)s:%(message)s'
     )
     logging.debug('Инициализация logging')

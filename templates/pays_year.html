@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1>Платежи физических лиц</h1>
+<h2>Данные по платежам</h2>
+{% if pays_stat %}
+  <table class="table table-hover text_small" >
+    <thead>
+    <tr>
+        <th class="text-center">Дата</th>
+        <th class="text-center">Сумма</th>
+        <th class="text-center">Изменение суммы</th>
+        <th class="text-center">Остаток</th>
+        <th class="text-center">Платежей</th>
+        <th class="text-center">Изменение количества</th>
+        <th class="text-center">ARPU</th>
+        <th class="text-center">Активных</th>
+        <th class="text-center">Баланс активных</th>
+        <th class="text-center">Баланс всех</th>
+
+    </tr>
+    </thead>
+    <tbody class="text-center">
+    {% for pay in pays_stat %}
+        {% if pay.sum_dif < 0 %}
+        <tr class='warning'>
+        {% else %}
+        <tr>
+        {% endif %}
+            <td>
+                <a href="/audit/utmpays/{{ pay.date.strftime('%Y') }}/{{ pay.date.strftime('%m') }}">{{ pay.date }}</a>
+            </td>
+            <td>{{ pay.summ|round(2) }}</td>
+            {% if pay.sum_dif == 0 %}
+                <td></td>
+            {% else %}
+                <td>{{ pay.sum_dif|round(2) }} | {{ pay.sum_dif_p }}%</td>
+            {% endif %}
+            <td class="text-center">{{ pay.sum_balance }}</td>
+            <td class="text-center">{{ pay.count }}</td>
+            {% if pay.count_dif == 0%}
+                <td></td>
+            {% else %}
+                <td>{{ pay.count_dif }} | {{ pay.count_dif_p }}%</td>
+            {% endif %}
+            <td>{{ pay.avg }}</td>
+            <td class="text-center">{{ pay.count_active|round(2) }}</td>
+            <td class="text-center">{{ pay.avg_balance|round(2) }}</td>
+            <td class="text-center">{{ pay.avg_balance_all|round(2) }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td><b>Итого</b></td>
+            <td><b>{{ pays_stat_summary.summ|round(2) }}</b></td>
+            <td></td>
+            <td></td>
+            <td><b>{{ pays_stat_summary.count }}</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><b>Среднее</b></td>
+            <td><b>{{ pays_stat_summary.avg_summ|round(2) }}</b></td>
+            <td></td>
+            <td></td>
+            <td><b>{{ pays_stat_summary.avg_count }}</b></td>
+            <td></td>
+            <td><b>{{ pays_stat_summary.avg_pay|round(2) }}</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+  </table>
+{% endif %}
+{% endblock main %}
