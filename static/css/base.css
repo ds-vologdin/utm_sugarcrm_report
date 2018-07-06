@@ -15,3 +15,11 @@
 .text_small {
   font-size: 12px;
 }
+
+.td_disable {
+  display: none;
+}
+
+.button--enable {
+  background-color: #343a40;
+}
