@@ -348,23 +348,10 @@ def fetch_balances_periods(db, report_periods):
 def utmpays_statistic(year='', month='', last='year', csv_flag=False):
     '''Функция формирует отчёт по платежам физ. лиц
     '''
-    # if not request.user.groups.filter(name__exact='utmpays').exists():
-    #     context = {'user': request.user.username,
-    #                'error': 'Не хватает прав!'
-    #                }
-    #     return render_template(request, 'audit/error.html', context)
-
-#     logger.info(
-#         'user "%s" run function %s whith arguments last="%s" year="%s" \
-# month="%s"' %
-#         (request.user, utmpays_statistic.__name__, last, year, month)
-#     )
-
     # Формируем даты начала и конца периода
     date_begin, date_end = get_report_begin_end_date(year, month, last)
 
     # Получаем данные из БД UTM
-    # db = PgSqlDB()
     db = engine_utm
     pays = fetch_pays_from_utm(db, date_begin, date_end)
 
