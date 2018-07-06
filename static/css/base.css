@@ -16,7 +16,7 @@
   font-size: 12px;
 }
 
-.td_disable {
+.td_disable, .main__block--disable{
   display: none;
 }
 
@@ -26,4 +26,9 @@
 
 .group-button-table {
   margin: 10px 0;
+}
+
+.menu--enable{
+  border: 2px solid grey;
+  border-radius: 5px;
 }

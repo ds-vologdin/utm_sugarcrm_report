@@ -1,16 +1,56 @@
 {% extends "base.html" %}
 
+{% block sidebar %}
+<ul class="nav flex-column">
+  <li class="nav-item">
+    <a class="nav-link menu-sidebar show-table menu--enable" href="#">
+      Таблица с данными
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link menu-sidebar show-graph-pays" href="#">
+      <span data-feather="bar-chart-2"></span>
+      Платежи
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <span data-feather="shopping-cart"></span>
+      Products
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <span data-feather="users"></span>
+      Customers
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <span data-feather="bar-chart-2"></span>
+      Reports
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <span data-feather="layers"></span>
+      Integrations
+    </a>
+  </li>
+</ul>
+{% endblock sidebar %}
+
 {% block main %}
 <h1>Платежи физических лиц</h1>
-<h2>Данные по платежам</h2>
-<div class="btn-group group-button-table" role="group" aria-label="Basic example">
-  <button type="button" class="btn btn-secondary button-balance" title="Остаток на начало месяца">Остаток</button>
-  <button type="button" class="btn btn-secondary button-arpu">ARPU</button>
-  <button type="button" class="btn btn-secondary button-active-user" title="Количество активных пользователей на начало месяца">Активных</button>
-  <button type="button" class="btn btn-secondary button-avg-balance-active" title="Средний баланс активных пользователей на начало месяца">Баланс активных</button>
-  <button type="button" class="btn btn-secondary button-avg-balance-all" title="Средний баланс всех пользователей на начало месяца">Баланс всех</button>
-</div>
 {% if pays_stat %}
+<div class="main_item main__table">
+  <div class="btn-group group-button-table" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-secondary button-balance" title="Остаток на начало месяца">Остаток</button>
+    <button type="button" class="btn btn-secondary button-arpu">ARPU</button>
+    <button type="button" class="btn btn-secondary button-active-user" title="Количество активных пользователей на начало месяца">Активных</button>
+    <button type="button" class="btn btn-secondary button-avg-balance-active" title="Средний баланс активных пользователей на начало месяца">Баланс активных</button>
+    <button type="button" class="btn btn-secondary button-avg-balance-all" title="Средний баланс всех пользователей на начало месяца">Баланс всех</button>
+  </div>
   <table class="table table-hover" >
     <thead>
     <tr>
@@ -83,6 +123,55 @@
         </tr>
     </tbody>
   </table>
+</div>
+<div class="main_item main__graph-pays main__block--disable">
+  <canvas id="pays_graphs" width="400" height="150"></canvas>
+</div>
 {% endif %}
-<script src="/static/js/pays_year.js"></script>
 {% endblock main %}
+
+{% block script %}
+<script src="/static/js/pays_year.js"></script>
+
+<!-- Graphs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+<script>
+var data_lables = [{% for pay in pays_stat %} "{{ pay.date.strftime('%Y/%m') }}", {% endfor %}];
+
+var ctx = document.getElementById("pays_graphs");
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: data_lables,
+        datasets: [{
+            label: "Платежи",
+            borderColor: 'blue',
+            backgroundColor: 'transparent',
+            lineTension: 0.2,
+            borderWidth: 2,
+            pointRadius: 1,
+            data: [{% for pay in pays_stat %} {{ pay.summ }}, {% endfor %}],
+        },
+        {
+            label: "Исходящий остаток активных абонентов на начало месяца",
+            borderColor: 'red',
+            backgroundColor: 'transparent',
+            lineTension: 0.2,
+            borderWidth: 2,
+            pointRadius: 1,
+            data: [{% for pay in pays_stat %} {{ pay.sum_balance }}, {% endfor %}],
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                display: true,
+                ticks: {
+                    suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                }
+            }]
+        }
+    }
+});
+</script>
+{% endblock script %}
