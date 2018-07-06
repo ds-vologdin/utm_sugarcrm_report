@@ -3,12 +3,12 @@
 {% block main %}
 <h1>Платежи физических лиц</h1>
 <h2>Данные по платежам</h2>
-<div class="btn-group" role="group" aria-label="Basic example">
-  <button type="button" class="btn btn-secondary button-table button-balance" title="Остаток на начало месяца">Остаток</button>
-  <button type="button" class="btn btn-secondary button-table button-arpu">ARPU</button>
-  <button type="button" class="btn btn-secondary button-table button-active-user" title="Количество активных пользователей на начало месяца">Активных</button>
-  <button type="button" class="btn btn-secondary button-table button-avg-balance-active" title="Средний баланс активных пользователей на начало месяца">Баланс активных</button>
-  <button type="button" class="btn btn-secondary button-table button-avg-balance-all" title="Средний баланс всех пользователей на начало месяца">Баланс всех</button>
+<div class="btn-group group-button-table" role="group" aria-label="Basic example">
+  <button type="button" class="btn btn-secondary button-balance" title="Остаток на начало месяца">Остаток</button>
+  <button type="button" class="btn btn-secondary button-arpu">ARPU</button>
+  <button type="button" class="btn btn-secondary button-active-user" title="Количество активных пользователей на начало месяца">Активных</button>
+  <button type="button" class="btn btn-secondary button-avg-balance-active" title="Средний баланс активных пользователей на начало месяца">Баланс активных</button>
+  <button type="button" class="btn btn-secondary button-avg-balance-all" title="Средний баланс всех пользователей на начало месяца">Баланс всех</button>
 </div>
 {% if pays_stat %}
   <table class="table table-hover" >

@@ -23,3 +23,7 @@
 .button--enable {
   background-color: #343a40;
 }
+
+.group-button-table {
+  margin: 10px 0;
+}
