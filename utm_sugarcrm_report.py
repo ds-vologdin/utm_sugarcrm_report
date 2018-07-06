@@ -8,7 +8,7 @@ from logging import getLogger
 from login_users import login_manager, get_user
 from settings import config
 from admin import create_admin
-from utmbill import utmbill
+from utmbill.controller import utmbill
 
 
 logger = getLogger(__name__)
