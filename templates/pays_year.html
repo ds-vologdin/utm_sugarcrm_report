@@ -16,10 +16,10 @@
     <tr>
         <th class="text-center">Дата</th>
         <th class="text-center">Сумма</th>
-        <th class="text-center">Изменение суммы</th>
+        <th class="text-center" colspan=2>Изменение суммы</th>
         <th class="text-center td-balance td_disable">Остаток</th>
         <th class="text-center">Платежей</th>
-        <th class="text-center">Изменение количества</th>
+        <th class="text-center" colspan=2>Изменение количества</th>
         <th class="text-center td-arpu td_disable">ARPU</th>
         <th class="text-center td-active-user td_disable">Активных</th>
         <th class="text-center td-avg-balance-active td_disable">Баланс активных</th>
@@ -39,16 +39,17 @@
             </td>
             <td>{{ pay.summ|round(2) }}</td>
             {% if pay.sum_dif == 0 %}
-                <td></td>
+                <td></td><td></td>
             {% else %}
-                <td>{{ pay.sum_dif|round(2) }} | {{ pay.sum_dif_p }}%</td>
+                <td class="text-right">{{ pay.sum_dif|round(2) }}</td><td class="text-left">{{ pay.sum_dif_p }}%</td>
             {% endif %}
             <td class="text-center td-balance td_disable">{{ pay.sum_balance }}</td>
             <td class="text-center">{{ pay.count }}</td>
             {% if pay.count_dif == 0%}
-                <td></td>
+                <td></td><td></td>
             {% else %}
-                <td>{{ pay.count_dif }} | {{ pay.count_dif_p }}%</td>
+                <td class="text-right">{{ pay.count_dif }}</td>
+                <td class="text-left">{{ pay.count_dif_p }}%</td>
             {% endif %}
             <td class="td-arpu td_disable">{{ pay.avg }}</td>
             <td class="text-center td-active-user td_disable">{{ pay.count_active|round(2) }}</td>
@@ -59,10 +60,10 @@
         <tr>
             <td><b>Итого</b></td>
             <td><b>{{ pays_stat_summary.summ|round(2) }}</b></td>
-            <td></td>
+            <td></td><td></td>
             <td class="td-balance td_disable"></td>
             <td><b>{{ pays_stat_summary.count }}</b></td>
-            <td></td>
+            <td></td><td></td>
             <td class="td-arpu td_disable"></td>
             <td class="td-active-user td_disable"></td>
             <td class="td-avg-balance-active td_disable"></td>
@@ -71,10 +72,10 @@
         <tr>
             <td><b>Среднее</b></td>
             <td><b>{{ pays_stat_summary.avg_summ|round(2) }}</b></td>
-            <td></td>
+            <td></td><td></td>
             <td class="td-balance td_disable"></td>
             <td><b>{{ pays_stat_summary.avg_count }}</b></td>
-            <td></td>
+            <td></td><td></td>
             <td class="td-arpu td_disable"><b>{{ pays_stat_summary.avg_pay|round(2) }}</b></td>
             <td class="td-active-user td_disable"></td>
             <td class="td-avg-balance-active td_disable"></td>
