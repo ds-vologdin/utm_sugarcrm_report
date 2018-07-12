@@ -1,13 +1,13 @@
 import flask
 import flask_login
-from forms import LoginForm
+
 from urllib.parse import urlparse, urljoin
 from logging import getLogger
 
-
-from login_users import login_manager, get_user
+from auth.forms import LoginForm
+from auth.login_users import login_manager, get_user
+from auth.admin import create_admin
 from settings import config
-from admin import create_admin
 from utmbill.controller import utmbill
 
 

@@ -2,7 +2,7 @@ import flask_login
 from passlib.hash import pbkdf2_sha256
 import logging
 
-from models import UsersReport
+from .models import UsersReport
 
 
 login_manager = flask_login.LoginManager()

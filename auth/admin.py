@@ -4,7 +4,7 @@ from passlib.hash import pbkdf2_sha256
 from flask_login import current_user
 import logging
 
-from models import UsersReport, session_global
+from auth.models import UsersReport, session_global
 
 
 class UsersReportAdmin(ModelView):
