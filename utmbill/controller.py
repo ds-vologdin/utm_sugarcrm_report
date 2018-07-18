@@ -18,20 +18,6 @@ utmbill = Blueprint(
 )
 
 
-@utmbill.route('/', defaults={'page': 'index'})
-@utmbill.route('/<page>')
-def show(page):
-    logger.debug('blueprint utmbill')
-    template = '{}.html'.format(page)
-    try:
-        return render_template(template)
-    except TemplateNotFound:
-        logger.debug(
-            'blueprint utmbill: TemplateNotFound ({})'.format(template)
-        )
-        abort(404)
-
-
 @utmbill.route('/pays/')
 def utmpays_statistic(year='', month='', last='year', csv_flag=False):
     '''Функция формирует отчёт по платежам физ. лиц
