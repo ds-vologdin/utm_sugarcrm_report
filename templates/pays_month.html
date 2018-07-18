@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+<ul class="nav flex-column">
+  <li class="nav-item">
+    <a class="nav-link menu-sidebar show-table menu--enable" href="#">
+      Таблица с данными
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link menu-sidebar show-graph-pays" href="#">Платежи</a>
+  </li>
+  <li class="nav-item menu-sidebar show-graph-count-pays">
+    <a class="nav-link" href="#">Количество платежей</a>
+  </li>
+  <li class="nav-item menu-sidebar show-graph-balance">
+    <a class="nav-link" href="#">Баланс</a>
+  </li>
+</ul>
+{% endblock sidebar %}
+
+{% block main %}
+{% if pays_stat %}
+    <h1>Платежи за {{ date_begin.strftime('%Y-%m') }}</h1>
+    <!-- <canvas id="myChart" width="400" height="150"></canvas>
+    <h2>Платежи нарастающим итогом</h2>
+    <canvas id="progres_total" width="400" height="150"></canvas> -->
+    <table class="table table-hover" >
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Сумма</th>
+                <th>Количество</th>
+                <th>ARPU</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pay in pays_stat %}
+            <tr>
+                <td>{{ pay.date.strftime('%Y-%m-%d') }}</td>
+                <td>{{ pay.summ }}</td>
+                <td>{{ pay.count }}</td>
+                <td>{{ pay.avg }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td><b>Итого</b></td>
+                <td><b>{{ pays_stat_summary.summ }}</b></td>
+                <td><b>{{ pays_stat_summary.count }}</b></td>
+                <td><b>{{ pays_stat_summary.avg }}</b></td>
+            </tr>
+        </tbody>
+    </table>
+{% else %}
+    <p>No pays are available.</p>
+{% endif %}
+{% endblock main %}

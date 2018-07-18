@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, abort
-from jinja2 import TemplateNotFound
+from flask import Blueprint, render_template
+import flask_login
 from logging import getLogger
 
 from .helpers import get_report_begin_end_date
@@ -19,7 +19,10 @@ utmbill = Blueprint(
 
 
 @utmbill.route('/pays/')
-def utmpays_statistic(year='', month='', last='year', csv_flag=False):
+@utmbill.route('/pays/<int:year>')
+@utmbill.route('/pays/<int:year>/<int:month>')
+@flask_login.login_required
+def utmpays_statistic(year='', month='', last='year'):
     '''Функция формирует отчёт по платежам физ. лиц
     '''
     date_begin, date_end = get_report_begin_end_date(year, month, last)
@@ -44,5 +47,6 @@ def utmpays_statistic(year='', month='', last='year', csv_flag=False):
         'date_begin': date_begin,
         'menu_url': '/audit/utmpays/',
     }
-
+    if type_report == 'month':
+        return render_template('pays_month.html', **context)
     return render_template('pays_year.html', **context)

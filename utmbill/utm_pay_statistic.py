@@ -1,4 +1,5 @@
 from itertools import groupby
+from operator import itemgetter
 from sqlalchemy import func
 from datetime import datetime, date, timedelta
 
@@ -10,14 +11,13 @@ def group_pays_by_date(pays_raw):
     if not pays_raw:
         return []
 
-    pays_with_date = (
+    pays_with_date = [
         (date.fromtimestamp(timestamp), payment)
         for timestamp, payment in pays_raw
-    )
+    ]
     pays_group = []
-    for date_pays, payments_gen in groupby(pays_with_date, lambda x: x[0]):
-        payments_map = map(lambda x: x[1], payments_gen)
-        payments_list = list(payments_map)
+    for date_pays, payments_gen in groupby(pays_with_date, itemgetter(0)):
+        payments_list = list(map(itemgetter(1), payments_gen))
         pays_group.append({
             'date': date_pays,
             'summ': sum(payments_list),
@@ -39,7 +39,7 @@ def fetch_pays_from_utm(date_begin, date_end):
     '''
 
     date_begin_timestamp = get_timestamp_from_date(date_begin)
-    date_end_timestamp = get_timestamp_from_date(date_end)
+    date_end_timestamp = get_timestamp_from_date(date_end + timedelta(days=1))
     pays_raw = session_utm.query(
         PaymentTransactions.payment_enter_date,
         PaymentTransactions.payment_absolute
