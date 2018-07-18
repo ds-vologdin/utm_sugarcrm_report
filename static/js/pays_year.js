@@ -19,7 +19,6 @@ function enable_td(button, td_class, button_text) {
 }
 
 function switch_td() {
-  console.log(this.td_class);
   if (this.button.classList.contains('button--enable')===false) {
     enable_td(this.button, this.td_class, this.button_text)
   }
@@ -30,7 +29,6 @@ function switch_td() {
 
 function disable_main_block(item_control, item_class) {
   var menu_sidebar_items = document.getElementsByClassName('menu-sidebar');
-  console.log(menu_sidebar_items);
   for (var i=0; i < menu_sidebar_items.length; i++) {
     menu_sidebar_items[i].classList.remove('menu--enable');
   }
@@ -41,13 +39,10 @@ function disable_main_block(item_control, item_class) {
   }
   var main_item = document.getElementsByClassName(item_class);
   main_item[0].classList.remove('main__block--disable');
-  console.log(main_item);
-
 }
 
 
 function switch_main_block(){
-  console.log(this.item_class);
   if (this.item_control.classList.contains('menu--enable')===false) {
     disable_main_block(this.item_control, this.item_class)
   }
@@ -106,4 +101,18 @@ show_graph_pays[0].addEventListener('click', {
   handleEvent: switch_main_block,
   item_control: show_graph_pays[0],
   item_class: 'main__graph-pays',
+});
+
+var show_graph_count_pays = document.getElementsByClassName('show-graph-count-pays');
+show_graph_count_pays[0].addEventListener('click', {
+  handleEvent: switch_main_block,
+  item_control: show_graph_count_pays[0],
+  item_class: 'main__graph-count-pays',
+});
+
+var show_graph_balance = document.getElementsByClassName('show-graph-balance');
+show_graph_balance[0].addEventListener('click', {
+  handleEvent: switch_main_block,
+  item_control: show_graph_balance[0],
+  item_class: 'main__graph-balance',
 });

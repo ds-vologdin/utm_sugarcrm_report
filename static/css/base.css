@@ -29,6 +29,5 @@
 }
 
 .menu--enable{
-  border: 2px solid grey;
-  border-radius: 5px;
+  font-weight: bold;
 }
