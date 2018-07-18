@@ -1,0 +1,79 @@
+<div class="btn-group group-button-table" role="group" aria-label="Basic example">
+  <button type="button" class="btn btn-secondary button-balance" title="Остаток на начало месяца">Остаток</button>
+  <button type="button" class="btn btn-secondary button-arpu">ARPU</button>
+  <button type="button" class="btn btn-secondary button-active-user" title="Количество активных пользователей на начало месяца">Активных</button>
+  <button type="button" class="btn btn-secondary button-avg-balance-active" title="Средний баланс активных пользователей на начало месяца">Баланс активных</button>
+  <button type="button" class="btn btn-secondary button-avg-balance-all" title="Средний баланс всех пользователей на начало месяца">Баланс всех</button>
+</div>
+<table class="table table-hover" >
+  <thead>
+  <tr>
+      <th class="text-center">Дата</th>
+      <th class="text-center">Сумма</th>
+      <th class="text-center" colspan=2>Изменение суммы</th>
+      <th class="text-center td-balance td_disable">Остаток</th>
+      <th class="text-center">Платежей</th>
+      <th class="text-center" colspan=2>Изменение количества</th>
+      <th class="text-center td-arpu td_disable">ARPU</th>
+      <th class="text-center td-active-user td_disable">Активных</th>
+      <th class="text-center td-avg-balance-active td_disable">Баланс активных</th>
+      <th class="text-center td-avg-balance-all td_disable">Баланс всех</th>
+
+  </tr>
+  </thead>
+  <tbody class="text-center">
+  {% for pay in pays_stat %}
+      {% if pay.sum_dif < 0 %}
+      <tr class='warning'>
+      {% else %}
+      <tr>
+      {% endif %}
+          <td>
+              <a href="/audit/utmpays/{{ pay.date.strftime('%Y') }}/{{ pay.date.strftime('%m') }}">{{ pay.date }}</a>
+          </td>
+          <td>{{ pay.summ|round(2) }}</td>
+          {% if pay.sum_dif == 0 %}
+              <td></td><td></td>
+          {% else %}
+              <td class="text-right">{{ pay.sum_dif|round(2) }}</td><td class="text-left">{{ pay.sum_dif_p }}%</td>
+          {% endif %}
+          <td class="text-center td-balance td_disable">{{ pay.sum_balance }}</td>
+          <td class="text-center">{{ pay.count }}</td>
+          {% if pay.count_dif == 0%}
+              <td></td><td></td>
+          {% else %}
+              <td class="text-right">{{ pay.count_dif }}</td>
+              <td class="text-left">{{ pay.count_dif_p }}%</td>
+          {% endif %}
+          <td class="td-arpu td_disable">{{ pay.avg }}</td>
+          <td class="text-center td-active-user td_disable">{{ pay.count_active|round(2) }}</td>
+          <td class="text-center td-avg-balance-active td_disable">{{ pay.avg_balance|round(2) }}</td>
+          <td class="text-center td-avg-balance-all td_disable">{{ pay.avg_balance_all|round(2) }}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+          <td><b>Итого</b></td>
+          <td><b>{{ pays_stat_summary.summ|round(2) }}</b></td>
+          <td></td><td></td>
+          <td class="td-balance td_disable"></td>
+          <td><b>{{ pays_stat_summary.count }}</b></td>
+          <td></td><td></td>
+          <td class="td-arpu td_disable"></td>
+          <td class="td-active-user td_disable"></td>
+          <td class="td-avg-balance-active td_disable"></td>
+          <td class="td-avg-balance-all td_disable"></td>
+      </tr>
+      <tr>
+          <td><b>Среднее</b></td>
+          <td><b>{{ pays_stat_summary.avg_summ|round(2) }}</b></td>
+          <td></td><td></td>
+          <td class="td-balance td_disable"></td>
+          <td><b>{{ pays_stat_summary.avg_count }}</b></td>
+          <td></td><td></td>
+          <td class="td-arpu td_disable"><b>{{ pays_stat_summary.avg_pay|round(2) }}</b></td>
+          <td class="td-active-user td_disable"></td>
+          <td class="td-avg-balance-active td_disable"></td>
+          <td class="td-avg-balance-all td_disable"></td>
+      </tr>
+  </tbody>
+</table>

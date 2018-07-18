@@ -23,212 +23,24 @@
 <h1>Платежи физических лиц</h1>
 {% if pays_stat %}
 <div class="main_item main__table">
-  <div class="btn-group group-button-table" role="group" aria-label="Basic example">
-    <button type="button" class="btn btn-secondary button-balance" title="Остаток на начало месяца">Остаток</button>
-    <button type="button" class="btn btn-secondary button-arpu">ARPU</button>
-    <button type="button" class="btn btn-secondary button-active-user" title="Количество активных пользователей на начало месяца">Активных</button>
-    <button type="button" class="btn btn-secondary button-avg-balance-active" title="Средний баланс активных пользователей на начало месяца">Баланс активных</button>
-    <button type="button" class="btn btn-secondary button-avg-balance-all" title="Средний баланс всех пользователей на начало месяца">Баланс всех</button>
-  </div>
-  <table class="table table-hover" >
-    <thead>
-    <tr>
-        <th class="text-center">Дата</th>
-        <th class="text-center">Сумма</th>
-        <th class="text-center" colspan=2>Изменение суммы</th>
-        <th class="text-center td-balance td_disable">Остаток</th>
-        <th class="text-center">Платежей</th>
-        <th class="text-center" colspan=2>Изменение количества</th>
-        <th class="text-center td-arpu td_disable">ARPU</th>
-        <th class="text-center td-active-user td_disable">Активных</th>
-        <th class="text-center td-avg-balance-active td_disable">Баланс активных</th>
-        <th class="text-center td-avg-balance-all td_disable">Баланс всех</th>
-
-    </tr>
-    </thead>
-    <tbody class="text-center">
-    {% for pay in pays_stat %}
-        {% if pay.sum_dif < 0 %}
-        <tr class='warning'>
-        {% else %}
-        <tr>
-        {% endif %}
-            <td>
-                <a href="/audit/utmpays/{{ pay.date.strftime('%Y') }}/{{ pay.date.strftime('%m') }}">{{ pay.date }}</a>
-            </td>
-            <td>{{ pay.summ|round(2) }}</td>
-            {% if pay.sum_dif == 0 %}
-                <td></td><td></td>
-            {% else %}
-                <td class="text-right">{{ pay.sum_dif|round(2) }}</td><td class="text-left">{{ pay.sum_dif_p }}%</td>
-            {% endif %}
-            <td class="text-center td-balance td_disable">{{ pay.sum_balance }}</td>
-            <td class="text-center">{{ pay.count }}</td>
-            {% if pay.count_dif == 0%}
-                <td></td><td></td>
-            {% else %}
-                <td class="text-right">{{ pay.count_dif }}</td>
-                <td class="text-left">{{ pay.count_dif_p }}%</td>
-            {% endif %}
-            <td class="td-arpu td_disable">{{ pay.avg }}</td>
-            <td class="text-center td-active-user td_disable">{{ pay.count_active|round(2) }}</td>
-            <td class="text-center td-avg-balance-active td_disable">{{ pay.avg_balance|round(2) }}</td>
-            <td class="text-center td-avg-balance-all td_disable">{{ pay.avg_balance_all|round(2) }}</td>
-        </tr>
-        {% endfor %}
-        <tr>
-            <td><b>Итого</b></td>
-            <td><b>{{ pays_stat_summary.summ|round(2) }}</b></td>
-            <td></td><td></td>
-            <td class="td-balance td_disable"></td>
-            <td><b>{{ pays_stat_summary.count }}</b></td>
-            <td></td><td></td>
-            <td class="td-arpu td_disable"></td>
-            <td class="td-active-user td_disable"></td>
-            <td class="td-avg-balance-active td_disable"></td>
-            <td class="td-avg-balance-all td_disable"></td>
-        </tr>
-        <tr>
-            <td><b>Среднее</b></td>
-            <td><b>{{ pays_stat_summary.avg_summ|round(2) }}</b></td>
-            <td></td><td></td>
-            <td class="td-balance td_disable"></td>
-            <td><b>{{ pays_stat_summary.avg_count }}</b></td>
-            <td></td><td></td>
-            <td class="td-arpu td_disable"><b>{{ pays_stat_summary.avg_pay|round(2) }}</b></td>
-            <td class="td-active-user td_disable"></td>
-            <td class="td-avg-balance-active td_disable"></td>
-            <td class="td-avg-balance-all td_disable"></td>
-        </tr>
-    </tbody>
-  </table>
+  {% include '_pays_year_table.html' %}
 </div>
 <div class="main_item main__graph-pays main__block--disable">
-  <canvas id="pays_graphs" width="400" height="150"></canvas>
+  <canvas id="pays_graphs" class="main_item__graph"></canvas>
 </div>
 <div class="main_item main__graph-count-pays main__block--disable">
   <h2>График количества платежей</h2>
-  <canvas id="pays_count" width="400" height="150"></canvas>
+  <canvas id="pays_count" class="main_item__graph"></canvas>
 </div>
 <div class="main_item main__graph-balance main__block--disable">
   <h2>График средних балансов абонентов</h2>
-  <canvas id="balance" width="400" height="150"></canvas>
+  <canvas id="balance" class="main_item__graph"></canvas>
 </div>
 {% endif %}
 {% endblock main %}
 
 {% block script %}
-<script src="/static/js/pays_year.js"></script>
+<script type="text/javascript" src="/static/js/pays_year.js"></script>
+{% include '_pays_year_chart_js.html' %}
 
-<!-- Graphs -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-<script>
-var data_lables = [{% for pay in pays_stat %} "{{ pay.date.strftime('%Y/%m') }}", {% endfor %}];
-
-var ctx = document.getElementById("pays_graphs");
-var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: data_lables,
-        datasets: [{
-            label: "Платежи",
-            borderColor: 'blue',
-            backgroundColor: 'transparent',
-            lineTension: 0.2,
-            borderWidth: 2,
-            pointRadius: 1,
-            data: [{% for pay in pays_stat %} {{ pay.summ }}, {% endfor %}],
-        },
-        {
-            label: "Исходящий остаток активных абонентов на начало месяца",
-            borderColor: 'red',
-            backgroundColor: 'transparent',
-            lineTension: 0.2,
-            borderWidth: 2,
-            pointRadius: 1,
-            data: [{% for pay in pays_stat %} {{ pay.sum_balance }}, {% endfor %}],
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                display: true,
-                ticks: {
-                    suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
-                }
-            }]
-        }
-    }
-});
-
-var ctx_count = document.getElementById("pays_count");
-var myChart = new Chart(ctx_count, {
-// The type of chart we want to create
-    type: 'line',
-    // The data for our dataset
-    data: {
-        labels: data_lables,
-        datasets: [{
-            label: "Количество платежей",
-            borderColor: 'blue',
-            backgroundColor: 'transparent',
-            lineTension: 0.2,
-            borderWidth: 2,
-            pointRadius: 1,
-            data: [{% for pay in pays_stat %} {{ pay.count }}, {% endfor %}],
-            },
-            {
-            label: "Количество активных абонентов на 1 число",
-            borderColor: 'red',
-            backgroundColor: 'transparent',
-            lineTension: 0.2,
-            borderWidth: 2,
-            pointRadius: 1,
-            data: [{% for pay in pays_stat %} {{ pay.count_active }}, {% endfor %}],
-            },
-            {
-            label: "Средний баланс активных абонентов (смасштабирован: умножен на 5)",
-            borderColor: 'green',
-            backgroundColor: 'transparent',
-            lineTension: 0.2,
-            borderWidth: 2,
-            pointRadius: 1,
-            data: [{% for pay in pays_stat %} {{ pay.avg_balance }} * 5, {% endfor %}],
-            },
-        ]
-    },
-});
-
-
-var ctx_balance = document.getElementById("balance");
-var myChart = new Chart(ctx_balance, {
-// The type of chart we want to create
-    type: 'line',
-    // The data for our dataset
-    data: {
-        labels: data_lables,
-        datasets: [
-            {
-            label: "Средний баланс активных абонентов",
-            borderColor: 'green',
-            backgroundColor: 'transparent',
-            lineTension: 0.2,
-            borderWidth: 2,
-            pointRadius: 1,
-            data: [{% for pay in pays_stat %} {{ pay.avg_balance }}, {% endfor %}],
-            },
-            {
-            label: "Средний баланс активных абонентов",
-            borderColor: 'red',
-            backgroundColor: 'transparent',
-            lineTension: 0.2,
-            borderWidth: 2,
-            pointRadius: 1,
-            data: [{% for pay in pays_stat %} {{ pay.avg_balance_all }}, {% endfor %}],
-            },
-        ]
-    },
-});
-
-</script>
 {% endblock script %}
