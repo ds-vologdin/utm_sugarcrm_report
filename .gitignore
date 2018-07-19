@@ -105,3 +105,8 @@ venv.bak/
 
 alembic.ini
 tags
+
+#NODEJS
+# Dependency directories
+node_modules/
+jspm_packages/
