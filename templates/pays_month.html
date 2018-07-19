@@ -8,13 +8,7 @@
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link menu-sidebar show-graph-pays" href="#">Платежи</a>
-  </li>
-  <li class="nav-item menu-sidebar show-graph-count-pays">
-    <a class="nav-link" href="#">Количество платежей</a>
-  </li>
-  <li class="nav-item menu-sidebar show-graph-balance">
-    <a class="nav-link" href="#">Баланс</a>
+    <a class="nav-link menu-sidebar show-graph-pays" href="#">График</a>
   </li>
 </ul>
 {% endblock sidebar %}
@@ -22,37 +16,45 @@
 {% block main %}
 {% if pays_stat %}
     <h1>Платежи за {{ date_begin.strftime('%Y-%m') }}</h1>
-    <canvas id="myChart" width="400" height="150"></canvas>
-    <table class="table table-hover" >
-        <thead>
-            <tr>
-                <th>Дата</th>
-                <th>Сумма</th>
-                <th>Количество</th>
-                <th>ARPU</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for pay in pays_stat %}
-            <tr>
-                <td>{{ pay.date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ pay.summ|round(2) }}</td>
-                <td>{{ pay.count }}</td>
-                <td>{{ pay.avg }}</td>
-            </tr>
-            {% endfor %}
-            <tr>
-                <td><b>Итого</b></td>
-                <td><b>{{ pays_stat_summary.summ|round(2) }}</b></td>
-                <td><b>{{ pays_stat_summary.count }}</b></td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="main_item main__graph-pays main__block--disable">
+      <canvas id="myChart" width="400" height="150"></canvas>
+    </div>
+    <div class="main_item main__table">
+
+      <table class="table table-hover" >
+          <thead>
+              <tr>
+                  <th>Дата</th>
+                  <th>Сумма</th>
+                  <th>Количество</th>
+                  <th>ARPU</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for pay in pays_stat %}
+              <tr>
+                  <td>{{ pay.date.strftime('%Y-%m-%d') }}</td>
+                  <td>{{ pay.summ|round(2) }}</td>
+                  <td>{{ pay.count }}</td>
+                  <td>{{ pay.avg }}</td>
+              </tr>
+              {% endfor %}
+              <tr>
+                  <td><b>Итого</b></td>
+                  <td><b>{{ pays_stat_summary.summ|round(2) }}</b></td>
+                  <td><b>{{ pays_stat_summary.count }}</b></td>
+                  <td></td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
 {% else %}
     <p>No pays are available.</p>
 {% endif %}
 
-{% include '_pays_month_chart_js.html' %}
-
 {% endblock main %}
+
+{% block script %}
+<script type="text/javascript" src="/static/js/pays_year.js"></script>
+{% include '_pays_month_chart_js.html' %}
+{% endblock script %}

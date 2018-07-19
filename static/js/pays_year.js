@@ -50,69 +50,87 @@ function switch_main_block(){
 
 // button-balance
 var button_balance = document.getElementsByClassName('button-balance');
-button_balance[0].addEventListener('click', {
-  handleEvent: switch_td,
-  button: button_balance[0],
-  td_class: 'td-balance',
-  // button_text: 'Остаток'
-});
+if (button_balance.length > 0) {
+  button_balance[0].addEventListener('click', {
+    handleEvent: switch_td,
+    button: button_balance[0],
+    td_class: 'td-balance',
+  });
+}
+
 // button-arpu
 var button_arpu = document.getElementsByClassName('button-arpu');
-button_arpu[0].addEventListener('click', {
-  handleEvent: switch_td,
-  button: button_arpu[0],
-  td_class: 'td-arpu',
-  // button_text: 'ARPU'
-});
+if (button_arpu.length > 0) {
+  button_arpu[0].addEventListener('click', {
+    handleEvent: switch_td,
+    button: button_arpu[0],
+    td_class: 'td-arpu',
+  });
+}
+
 // button-active-user
 var button_active_user = document.getElementsByClassName('button-active-user');
-button_active_user[0].addEventListener('click', {
-  handleEvent: switch_td,
-  button: button_active_user[0],
-  td_class: 'td-active-user',
-  // button_text: 'Активных'
-});
+if (button_active_user > 0) {
+  button_active_user[0].addEventListener('click', {
+    handleEvent: switch_td,
+    button: button_active_user[0],
+    td_class: 'td-active-user',
+  });
+}
+
 // button-avg-balance-active
 var button_avg_balance_active = document.getElementsByClassName('button-avg-balance-active');
-button_avg_balance_active[0].addEventListener('click', {
-  handleEvent: switch_td,
-  button: button_avg_balance_active[0],
-  td_class: 'td-avg-balance-active',
-  // button_text: 'Баланс активных'
-});
+if (button_avg_balance_active.length > 0) {
+  button_avg_balance_active[0].addEventListener('click', {
+    handleEvent: switch_td,
+    button: button_avg_balance_active[0],
+    td_class: 'td-avg-balance-active',
+  });
+}
 // button-avg-balance-all
 var button_avg_balance_all = document.getElementsByClassName('button-avg-balance-all');
-button_avg_balance_all[0].addEventListener('click', {
-  handleEvent: switch_td,
-  button: button_avg_balance_all[0],
-  td_class: 'td-avg-balance-all',
-  // button_text: 'Баланс всех'
-});
+if (button_avg_balance_all.length > 0) {
+  button_avg_balance_all[0].addEventListener('click', {
+    handleEvent: switch_td,
+    button: button_avg_balance_all[0],
+    td_class: 'td-avg-balance-all',
+    // button_text: 'Баланс всех'
+  });
+}
 
 // show-table
 var main_show_table = document.getElementsByClassName('show-table');
-main_show_table[0].addEventListener('click', {
-  handleEvent: switch_main_block,
-  item_control: main_show_table[0],
-  item_class: 'main__table',
-});
+if (main_show_table.length > 0) {
+  main_show_table[0].addEventListener('click', {
+    handleEvent: switch_main_block,
+    item_control: main_show_table[0],
+    item_class: 'main__table',
+  });
+}
+
 var show_graph_pays = document.getElementsByClassName('show-graph-pays');
-show_graph_pays[0].addEventListener('click', {
-  handleEvent: switch_main_block,
-  item_control: show_graph_pays[0],
-  item_class: 'main__graph-pays',
-});
+if (show_graph_pays.length > 0) {
+  show_graph_pays[0].addEventListener('click', {
+    handleEvent: switch_main_block,
+    item_control: show_graph_pays[0],
+    item_class: 'main__graph-pays',
+  });
+}
 
 var show_graph_count_pays = document.getElementsByClassName('show-graph-count-pays');
-show_graph_count_pays[0].addEventListener('click', {
-  handleEvent: switch_main_block,
-  item_control: show_graph_count_pays[0],
-  item_class: 'main__graph-count-pays',
-});
+if (show_graph_count_pays.length > 0) {
+  show_graph_count_pays[0].addEventListener('click', {
+    handleEvent: switch_main_block,
+    item_control: show_graph_count_pays[0],
+    item_class: 'main__graph-count-pays',
+  });
+}
 
 var show_graph_balance = document.getElementsByClassName('show-graph-balance');
-show_graph_balance[0].addEventListener('click', {
-  handleEvent: switch_main_block,
-  item_control: show_graph_balance[0],
-  item_class: 'main__graph-balance',
-});
+if (show_graph_balance.length > 0) {
+  show_graph_balance[0].addEventListener('click', {
+    handleEvent: switch_main_block,
+    item_control: show_graph_balance[0],
+    item_class: 'main__graph-balance',
+  });
+}
