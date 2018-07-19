@@ -22,9 +22,7 @@
 {% block main %}
 {% if pays_stat %}
     <h1>Платежи за {{ date_begin.strftime('%Y-%m') }}</h1>
-    <!-- <canvas id="myChart" width="400" height="150"></canvas>
-    <h2>Платежи нарастающим итогом</h2>
-    <canvas id="progres_total" width="400" height="150"></canvas> -->
+    <canvas id="myChart" width="400" height="150"></canvas>
     <table class="table table-hover" >
         <thead>
             <tr>
@@ -54,4 +52,7 @@
 {% else %}
     <p>No pays are available.</p>
 {% endif %}
+
+{% include '_pays_month_chart_js.html' %}
+
 {% endblock main %}

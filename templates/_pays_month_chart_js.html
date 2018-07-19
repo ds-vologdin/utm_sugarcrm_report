@@ -1,0 +1,55 @@
+<!--JS для прорисовки графика -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+<script>
+    function progressive_total(arr) {
+        var total = 0;
+        var progres_total = [];
+        for (var i=0; i<arr.length; i++) {
+            total += arr[i];
+            progres_total[i] = Math.round(total * 100)/100;
+        }
+        return progres_total;
+    }
+
+    var summ_arr = [{%for pay in pays_stat %}{{pay.summ}},{% endfor %}];
+    var progres_total_summ = progressive_total(summ_arr);
+    var date_arr = [{%for pay in pays_stat %}'{{pay.date.strftime("%Y-%m-%d")}}',{% endfor %}];
+
+    var ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+    // The type of chart we want to create
+        type: 'line',
+        // The data for our dataset
+        data: {
+            labels: date_arr,
+            datasets: [{
+                label: "Платежи",
+                borderColor: 'blue',
+                backgroundColor: 'transparent',
+                lineTension: 0.2,
+                borderWidth: 2,
+                data: [{% for pay in pays_stat %} {{ pay.summ }}, {% endfor %}],
+            },
+            {
+                label: "Платежи нарастающим итогом",
+                borderColor: 'red',
+                backgroundColor: 'transparent',
+                lineTension: 0.2,
+                borderWidth: 2,
+                data: progres_total_summ,
+            }
+          ]
+        },
+        // Configuration options go here
+        options: {
+            scales: {
+                yAxes: [{
+                    display: true,
+                    ticks: {
+                        suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                    }
+                }]
+            }
+        }
+    });
+</script>
