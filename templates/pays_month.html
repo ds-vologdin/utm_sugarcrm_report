@@ -38,16 +38,16 @@
             {% for pay in pays_stat %}
             <tr>
                 <td>{{ pay.date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ pay.summ }}</td>
+                <td>{{ pay.summ|round(2) }}</td>
                 <td>{{ pay.count }}</td>
                 <td>{{ pay.avg }}</td>
             </tr>
             {% endfor %}
             <tr>
                 <td><b>Итого</b></td>
-                <td><b>{{ pays_stat_summary.summ }}</b></td>
+                <td><b>{{ pays_stat_summary.summ|round(2) }}</b></td>
                 <td><b>{{ pays_stat_summary.count }}</b></td>
-                <td><b>{{ pays_stat_summary.avg }}</b></td>
+                <td></td>
             </tr>
         </tbody>
     </table>
