@@ -1,10 +1,11 @@
 from itertools import groupby
 from operator import itemgetter
 from sqlalchemy import func
-from datetime import datetime, date, timedelta
+from datetime import date, timedelta
 
 from .utm_db import session_utm
 from .utm_db import PaymentTransactions, BalanceHistory, Users
+from .helpers import get_timestamp_from_date
 
 
 def group_pays_by_date(pays_raw):
@@ -24,14 +25,6 @@ def group_pays_by_date(pays_raw):
             'count': len(payments_list),
         })
     return pays_group
-
-
-def get_timestamp_from_date(date_current):
-    if not date_current:
-        return None
-    return datetime.combine(
-        date_current, datetime.min.time()
-    ).timestamp()
 
 
 def fetch_pays_from_utm(date_begin, date_end):

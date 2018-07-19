@@ -31,3 +31,7 @@
 .menu--enable{
   font-weight: bold;
 }
+
+.th-data {
+  width: 110px;
+}

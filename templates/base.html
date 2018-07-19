@@ -22,7 +22,10 @@
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{{ url_for('index') }}">Главная</a>
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('utmbill.utmpays_statistic')}}">Платежи</a>
+          <a class="nav-link" href="{{ url_for('utmbill.utmpays_statistic') }}">Платежи</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('utmbill.block_users_month', year=today.strftime('%Y'), month=today.strftime('%m')) }}">Блокировки</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Тикеты</a>
