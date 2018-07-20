@@ -1,0 +1,97 @@
+.header-menu {
+  display: flex;
+  justify-content: space-between;
+  background-color: #343a40;
+  color: #FFF;
+  height: 35px;
+  font-size: 20px;
+  padding: 0 5px;
+}
+
+.header-menu__left-block {
+  display: flex;
+}
+
+.header-left-block__logo {
+  margin: 0 20px 0 10px;
+}
+
+.header-left-block__menu {
+  display: flex;
+}
+
+.header-menu__login {
+  display: flex;
+}
+
+.logo__link:hover, .menu__link:hover, .login__link:hover {
+  color: #FFF;
+}
+
+.logo__link, .menu__link, .login__link {
+  color: rgba(255,255,255,.7);
+  text-decoration: none;
+  display: block;
+  padding: 5px 10px;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+}
+
+.button-dropdown {
+  background-color: #343a40;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+.button-dropdown__menu {
+  position: absolute;
+  background-color: #343a40;
+  border-radius: 5px;
+  right: 8px;
+  margin-top: 5px;
+}
+
+.dropdown__date:hover {
+  color: #FFF;
+}
+
+.dropdown__date {
+  display: block;
+  color: rgba(255,255,255,.7);
+  text-decoration: none;
+  text-align: center;
+  padding: 5px 31px;
+}
+
+.dropdown--uncollapse {
+  display: none;
+}
+
+.main-table {
+  border-collapse: collapse;
+}
+
+.main-table th, .main-table td {
+  padding: 10px;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+  border-left: 0;
+  border-right: 0;
+}
+
+.main-table__th--th-date {
+  width: 100px;
+}
+
+.main-table__td--center {
+  text-align: center;
+}
+
+.main-table__tr:hover {
+  background-color: #DCDCDC;
+}

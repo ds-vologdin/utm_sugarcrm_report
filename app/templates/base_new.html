@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="../../../../favicon.ico"> -->
+
+    <title>Отчёты</title>
+    <!-- Custom styles for this template -->
+    <!-- <link href="../static/css/base_new.css" rel="stylesheet"> -->
+    <link href="{{ url_for('static', filename='css/base_new.css') }}" rel="stylesheet">
+  </head>
+  <body>
+    <div class="header-menu">
+      <div class="header-left-block header-menu__left-block">
+        <div class="header-left-block__logo">
+          <a href="/" class="logo__link">Главная</a>
+        </div>
+        <div class="header-left-block__menu">
+          <a href="#" class="menu__link">Платежи</a>
+          <a href="#" class="menu__link">Блокировки</a>
+          <a href="#" class="menu__link">Тикеты</a>
+          <a href="#" class="menu__link">Ремонты</a>
+          <a href="#" class="menu__link">Осмотры</a>
+          <a href="#" class="menu__link">План работ</a>
+          <a href="#" class="menu__link">Работа с клиентами</a>
+        </div>
+      </div>
+      <div class="header-menu__login">
+        {% if current_user.is_authenticated %}
+          <a href="{{ url_for('auth.logout') }}" class="login__link">Выйти ({{ current_user.name }})</a>
+        {% else %}
+          <a href="{{ url_for('auth.login') }}" class="login__link">Войти</a>
+        {% endif %}
+      </div>
+    </div>
+
+    {% block menu %}
+    {% endblock menu %}
+
+    <div class="main">
+    {% block main %}
+    {% endblock main %}
+    </div>
+    {% block script %}
+    {% endblock script %}
+  </body>
+</html>
