@@ -1,5 +1,4 @@
 from datetime import datetime, date, timedelta
-from flask import render_template
 
 
 def get_report_begin_end_date(year='', month='', last='month'):
@@ -149,7 +148,3 @@ def get_timestamp_from_date(date_current):
     return datetime.combine(
         date_current, datetime.min.time()
     ).timestamp()
-
-
-def render_template_with_today_date(template, context):
-    return render_template(template, today=date.today(), **context)

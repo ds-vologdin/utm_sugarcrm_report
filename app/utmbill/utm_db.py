@@ -3,7 +3,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 import logging
 
-from settings import config
+from app.settings import config
 
 
 logger = logging.getLogger(__name__)

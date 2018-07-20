@@ -85,12 +85,3 @@ if not config:
     # если /etc/flask_market.conf не смогли прочитать, берём конфиг из примера
     logging.error('config file "{}" not found'.format(file_config))
     config = parse_config('flask_market.conf')
-
-logging_config = config.get('LOGGING')
-if logging_config:
-    logging.basicConfig(
-        filename=logging_config.get('FILE'),
-        level=logging_config.get('LEVEL'),
-        format='%(asctime)s:%(name)s %(levelname)s:%(message)s'
-    )
-    logging.debug('Инициализация logging')

@@ -6,7 +6,7 @@ from flask import json
 import logging
 from passlib.hash import pbkdf2_sha256
 
-from settings import config
+from app.settings import config
 
 
 databases = config.get('DATABASES')

@@ -1,11 +1,11 @@
-from flask import Blueprint, render_template
+from flask import Blueprint
 import flask_login
 from logging import getLogger
 
 from .helpers import get_report_begin_end_date
 from .helpers import get_report_periods, get_type_report
 from .helpers import get_last_years, get_last_months
-from .helpers import render_template_with_today_date
+from app.helpers import render_template_with_today_date
 
 from .utm_pay_statistic import fetch_pays_from_utm, calculate_pays_stat_periods
 from .utm_pay_statistic import calculate_summary_statistic_pays
