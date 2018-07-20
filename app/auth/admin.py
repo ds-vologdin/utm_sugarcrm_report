@@ -2,7 +2,7 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from passlib.hash import pbkdf2_sha256
 from flask_login import current_user
-import logging
+from app.logger import logger
 
 from .models import UsersReport, session_global
 
@@ -14,13 +14,13 @@ class UsersReportAdmin(ModelView):
 
     def is_accessible(self):
         if current_user.is_anonymous:
-            logging.warning('anonymous пытается зайти в админку')
+            logger.warning('anonymous пытается зайти в админку')
             return False
 
         if not current_user.is_active or not current_user.is_authenticated:
-            logging.warning('кто-то ломится в админку')
+            logger.warning('кто-то ломится в админку')
             return False
-        logging.debug(
+        logger.debug(
             'UsersReportAdmin current_user: {}'.format(current_user.id)
         )
 
@@ -33,5 +33,5 @@ class UsersReportAdmin(ModelView):
 def create_admin(app):
     admin = Admin(app, name='utm-sugarcrm-reports', template_mode='bootstrap3')
     admin.add_view(UsersReportAdmin(UsersReport, session_global))
-    logging.debug('Создали админку')
+    logger.debug('Создали админку')
     return admin
