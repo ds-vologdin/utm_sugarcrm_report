@@ -19,8 +19,8 @@
           <a href="/" class="logo__link">Главная</a>
         </div>
         <div class="header-left-block__menu">
-          <a href="#" class="menu__link">Платежи</a>
-          <a href="#" class="menu__link">Блокировки</a>
+          <a href="{{ url_for('utmbill.utmpays_statistic') }}" class="menu__link">Платежи</a>
+          <a href="{{ url_for('utmbill.block_users_month', year=today.strftime('%Y'), month=today.strftime('%m')) }}" class="menu__link">Блокировки</a>
           <a href="#" class="menu__link">Тикеты</a>
           <a href="#" class="menu__link">Ремонты</a>
           <a href="#" class="menu__link">Осмотры</a>

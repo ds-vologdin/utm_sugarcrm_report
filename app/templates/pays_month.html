@@ -1,17 +1,11 @@
-{% extends "base.html" %}
+{% extends "base_new.html" %}
 
-{% block sidebar %}
-<ul class="nav flex-column">
-  <li class="nav-item">
-    <a class="nav-link menu-sidebar show-table menu--enable" href="#">
-      Таблица с данными
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link menu-sidebar show-graph-pays" href="#">График</a>
-  </li>
-</ul>
-{% endblock sidebar %}
+{% block menu %}
+<div class="buttons-control">
+  <a class="buttons-control__item show-table buttons-control__item--enable" href="#">Таблица с данными</a>
+  <a class="buttons-control__item show-graph-pays" href="#">График</a>
+</div>
+{% endblock menu %}
 
 {% block main %}
 {% if pays_stat %}
@@ -21,29 +15,29 @@
     </div>
     <div class="main_item main__table">
 
-      <table class="table table-hover" >
+      <table class="main-table" >
           <thead>
               <tr>
-                  <th>Дата</th>
-                  <th>Сумма</th>
-                  <th>Количество</th>
-                  <th>ARPU</th>
+                  <th class="main-table__th">Дата</th>
+                  <th class="main-table__th">Сумма</th>
+                  <th class="main-table__th">Количество</th>
+                  <th class="main-table__th">ARPU</th>
               </tr>
           </thead>
           <tbody>
               {% for pay in pays_stat %}
-              <tr>
-                  <td>{{ pay.date.strftime('%Y-%m-%d') }}</td>
-                  <td>{{ pay.summ|round(2) }}</td>
-                  <td>{{ pay.count }}</td>
-                  <td>{{ pay.avg }}</td>
+              <tr class="main-table__tr">
+                  <td class="main-table__td main-table__td--center">{{ pay.date.strftime('%Y-%m-%d') }}</td>
+                  <td class="main-table__td main-table__td--center">{{ pay.summ|round(2) }}</td>
+                  <td class="main-table__td main-table__td--center">{{ pay.count }}</td>
+                  <td class="main-table__td main-table__td--center">{{ pay.avg }}</td>
               </tr>
               {% endfor %}
-              <tr>
-                  <td><b>Итого</b></td>
-                  <td><b>{{ pays_stat_summary.summ|round(2) }}</b></td>
-                  <td><b>{{ pays_stat_summary.count }}</b></td>
-                  <td></td>
+              <tr class="main-table__tr">
+                  <td class="main-table__td main-table__td--center"><b>Итого</b></td>
+                  <td class="main-table__td main-table__td--center"><b>{{ pays_stat_summary.summ|round(2) }}</b></td>
+                  <td class="main-table__td main-table__td--center"><b>{{ pays_stat_summary.count }}</b></td>
+                  <td class="main-table__td main-table__td--center"></td>
               </tr>
           </tbody>
       </table>

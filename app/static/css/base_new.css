@@ -6,6 +6,7 @@
   height: 35px;
   font-size: 20px;
   padding: 0 5px;
+  border-radius: 5px;
 }
 
 .header-menu__left-block {
@@ -74,6 +75,7 @@
 
 .main-table {
   border-collapse: collapse;
+  width: 100%;
 }
 
 .main-table th, .main-table td {
@@ -94,4 +96,29 @@
 
 .main-table__tr:hover {
   background-color: #DCDCDC;
+}
+
+.buttons-control {
+  display: inline-flex;
+  background-color:#6c757d;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+.buttons-control__item {
+  display: block;
+  font-size: 20px;
+  color: #FFF;
+  text-decoration: none;
+  padding: 5px 15px;
+}
+
+.buttons-control__item--enable {
+  font-weight: bold;
+  background-color: #5a6268;
+  border-radius: 5px;
+}
+
+.main__block--disable {
+  display: none;
 }

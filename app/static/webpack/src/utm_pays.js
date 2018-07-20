@@ -26,11 +26,13 @@ function switch_td() {
 }
 
 function disable_main_block(item_control, item_class) {
-  let menu_sidebar_items = document.getElementsByClassName('menu-sidebar');
+  let menu_sidebar_items = document.getElementsByClassName('buttons-control__item');
+  console.log(menu_sidebar_items);
   for (let menu_sidebar_item of menu_sidebar_items) {
-    menu_sidebar_item.classList.remove('menu--enable');
+    menu_sidebar_item.classList.remove('buttons-control__item--enable');
   }
-  item_control.classList.add('menu--enable');
+  console.log(item_control);
+  item_control.classList.add('buttons-control__item--enable');
   let main_items = document.getElementsByClassName('main_item');
   for (let main_item of main_items) {
     main_item.classList.add('main__block--disable');
@@ -43,7 +45,7 @@ function disable_main_block(item_control, item_class) {
 
 
 function switch_main_block(){
-  if (this.item_control.classList.contains('menu--enable')===false) {
+  if (this.item_control.classList.contains('buttons-control__item--enable')===false) {
     disable_main_block(this.item_control, this.item_class)
   }
 }
