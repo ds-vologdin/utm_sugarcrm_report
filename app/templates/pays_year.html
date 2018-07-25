@@ -1,23 +1,13 @@
-{% extends "base.html" %}
+{% extends "base_new.html" %}
 
-{% block sidebar %}
-<ul class="nav flex-column">
-  <li class="nav-item">
-    <a class="nav-link menu-sidebar show-table menu--enable" href="#">
-      Таблица с данными
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link menu-sidebar show-graph-pays" href="#">Платежи</a>
-  </li>
-  <li class="nav-item menu-sidebar show-graph-count-pays">
-    <a class="nav-link" href="#">Количество платежей</a>
-  </li>
-  <li class="nav-item menu-sidebar show-graph-balance">
-    <a class="nav-link" href="#">Баланс</a>
-  </li>
-</ul>
-{% endblock sidebar %}
+{% block menu %}
+<div class="buttons-control">
+  <a class="buttons-control__item show-table buttons-control__item--enable" href="#">Таблица с данными</a>
+  <a class="buttons-control__item show-graph-pays" href="#">Платежи</a>
+  <a class="buttons-control__item show-graph-count-pays" href="#">Количество платежей</a>
+  <a class="buttons-control__item show-graph-balance" href="#">Баланс</a>
+</div>
+{% endblock menu %}
 
 {% block main %}
 <h1>Платежи физических лиц</h1>

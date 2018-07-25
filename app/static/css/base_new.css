@@ -122,3 +122,11 @@
 .main__block--disable {
   display: none;
 }
+
+.td_disable, .main__block--disable{
+  display: none;
+}
+
+.button--enable {
+  background-color: #343a40;
+}

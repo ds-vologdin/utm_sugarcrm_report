@@ -1,23 +1,23 @@
-<div class="btn-group group-button-table" role="group" aria-label="Basic example">
-  <button type="button" class="btn btn-secondary button-balance" title="Остаток на начало месяца">Остаток</button>
-  <button type="button" class="btn btn-secondary button-arpu">ARPU</button>
-  <button type="button" class="btn btn-secondary button-active-user" title="Количество активных пользователей на начало месяца">Активных</button>
-  <button type="button" class="btn btn-secondary button-avg-balance-active" title="Средний баланс активных пользователей на начало месяца">Баланс активных</button>
-  <button type="button" class="btn btn-secondary button-avg-balance-all" title="Средний баланс всех пользователей на начало месяца">Баланс всех</button>
+<div class="buttons-control">
+  <a class="buttons-control__item button-balance" href="#" title="Остаток на начало месяца">Остаток</a>
+  <a class="buttons-control__item button-arpu" href="#">ARPU</a>
+  <a class="buttons-control__item button-active-user" href="#" title="Количество активных пользователей на начало месяца">Активных</a>
+  <a class="buttons-control__item button-avg-balance-active" href="#" title="Средний баланс активных пользователей на начало месяца">Баланс активных</a>
+  <a class="buttons-control__item button-avg-balance-all" href="#" title="Средний баланс всех пользователей на начало месяца">Баланс всех</a>
 </div>
-<table class="table table-hover" >
+<table class="main-table" >
   <thead>
   <tr>
-      <th class="text-center">Дата</th>
-      <th class="text-center">Сумма</th>
-      <th class="text-center" colspan=2>Изменение суммы</th>
-      <th class="text-center td-balance td_disable">Остаток</th>
-      <th class="text-center">Платежей</th>
-      <th class="text-center" colspan=2>Изменение количества</th>
-      <th class="text-center td-arpu td_disable">ARPU</th>
-      <th class="text-center td-active-user td_disable">Активных</th>
-      <th class="text-center td-avg-balance-active td_disable">Баланс активных</th>
-      <th class="text-center td-avg-balance-all td_disable">Баланс всех</th>
+      <th class="main-table__th">Дата</th>
+      <th class="main-table__th">Сумма</th>
+      <th class="main-table__th" colspan=2>Изменение суммы</th>
+      <th class="main-table__th td-balance td_disable">Остаток</th>
+      <th class="main-table__th">Платежей</th>
+      <th class="main-table__th" colspan=2>Изменение количества</th>
+      <th class="main-table__th td-arpu td_disable">ARPU</th>
+      <th class="main-table__th td-active-user td_disable">Активных</th>
+      <th class="main-table__th td-avg-balance-active td_disable">Баланс активных</th>
+      <th class="main-table__th td-avg-balance-all td_disable">Баланс всех</th>
 
   </tr>
   </thead>
@@ -35,24 +35,24 @@
           {% if pay.sum_dif == 0 %}
               <td></td><td></td>
           {% else %}
-              <td class="text-right">{{ pay.sum_dif|round(2) }}</td><td class="text-left">{{ pay.sum_dif_p }}%</td>
+              <td class="main-table__td main-table__td--center">{{ pay.sum_dif|round(2) }}</td><td class="main-table__td main-table__td--center">{{ pay.sum_dif_p }}%</td>
           {% endif %}
-          <td class="text-center td-balance td_disable">{{ pay.sum_balance }}</td>
-          <td class="text-center">{{ pay.count }}</td>
+          <td class="main-table__td main-table__td--center td-balance td_disable">{{ pay.sum_balance }}</td>
+          <td class="main-table__td main-table__td--center">{{ pay.count }}</td>
           {% if pay.count_dif == 0%}
               <td></td><td></td>
           {% else %}
-              <td class="text-right">{{ pay.count_dif }}</td>
-              <td class="text-left">{{ pay.count_dif_p }}%</td>
+              <td class="main-table__td main-table__td--center">{{ pay.count_dif }}</td>
+              <td class="main-table__td main-table__td--center">{{ pay.count_dif_p }}%</td>
           {% endif %}
-          <td class="td-arpu td_disable">{{ pay.avg }}</td>
-          <td class="text-center td-active-user td_disable">{{ pay.count_active|round(2) }}</td>
-          <td class="text-center td-avg-balance-active td_disable">
+          <td class="main-table__td main-table__td--center td-arpu td_disable">{{ pay.avg }}</td>
+          <td class="main-table__td main-table__td--center td-active-user td_disable">{{ pay.count_active|round(2) }}</td>
+          <td class="main-table__td main-table__td--center td-avg-balance-active td_disable">
             {% if pay.avg_balance %}
               {{ pay.avg_balance|round(2) }}
             {% endif %}
           </td>
-          <td class="text-center td-avg-balance-all td_disable">{{ pay.avg_balance_all|round(2) }}</td>
+          <td class="main-table__td main-table__td--center td-avg-balance-all td_disable">{{ pay.avg_balance_all|round(2) }}</td>
       </tr>
       {% endfor %}
       <tr>
