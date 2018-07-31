@@ -20,9 +20,20 @@ def user_loader(id):
 
 
 def get_user_with_api_key(api_key):
+    '''Функция получения пользователя по api_key.
+    Формат api_key: login:key
+    '''
+    logging.debug(api_key)
     if not api_key:
         return
-    return UsersReport.query.filter_by(api_key=api_key).first()
+    api_key_list = api_key.split(':')
+    if len(api_key_list) != 2:
+        logging.error('не верный формат api_key: {}'.format(api_key))
+        return
+    login, key = api_key_list
+    return UsersReport.query.filter_by(
+        login=login
+    ).filter_by(api_key=key).first()
 
 
 @login_manager.request_loader
@@ -38,8 +49,10 @@ def request_loader(request):
     if api_key:
         api_key = api_key.replace('Basic ', '', 1)
         try:
-            api_key = base64.b64decode(api_key)
-        except TypeError:
+            api_key = base64.b64decode(api_key).decode('ascii')
+        except TypeError as e:
+            logging.error('base64.b64decode error: {} ({})'.format(e, api_key))
+            api_key = None
             pass
     user = get_user_with_api_key(api_key)
     if user:
