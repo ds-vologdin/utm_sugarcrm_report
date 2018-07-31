@@ -1,6 +1,8 @@
 from flask import Blueprint
 import flask_login
+from flask_restful import Api
 from logging import getLogger
+
 
 from .helpers import get_report_begin_end_date
 from .helpers import get_report_periods, get_type_report
@@ -11,6 +13,8 @@ from .utm_pay_statistic import fetch_pays_from_utm, calculate_pays_stat_periods
 from .utm_pay_statistic import calculate_summary_statistic_pays
 from .utm_block_user import fetch_users_block_month
 
+from .restful import BlockUsers
+
 logger = getLogger(__name__)
 
 
@@ -18,6 +22,11 @@ utmbill = Blueprint(
     'utmbill', __name__, template_folder='templates/utmpays/',
     url_prefix='/utmbill'
 )
+
+api = Api(utmbill)
+api.add_resource(BlockUsers,
+                 '/api/pays/block/<string:year>/<string:month>',
+                 '/api/pays/block/')
 
 
 @utmbill.route('/pays/')

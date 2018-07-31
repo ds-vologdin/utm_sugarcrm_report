@@ -6,7 +6,7 @@ from .models import UsersReport
 
 
 login_manager = flask_login.LoginManager()
-login_manager.login_view = 'login'
+login_manager.login_view = 'auth.login'
 
 
 class User(flask_login.UserMixin):
