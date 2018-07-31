@@ -39,7 +39,6 @@ def get_user(login, password):
     if not (login and password):
         return None
     user_report = UsersReport.query.filter(UsersReport.login == login).first()
-    print(user_report)
     if not user_report:
         return None
     if not verify_password(password, user_report.password):

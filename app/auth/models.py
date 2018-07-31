@@ -47,6 +47,8 @@ class UsersReport(UserMixin, Base):
     name = Column(String(200))
     email = Column(String(200))
     superuser = Column(Boolean, nullable=False, default=False)
+    # Если api_key == Null, значит авторизация пользователю запрещена
+    api_key = Column(String(64), unique=True, nullable=True)
 
     def __init__(self, login='None', password='None', name=None, email=None):
         self.login = login
