@@ -28,7 +28,9 @@ def get_user_with_api_key(api_key):
         return
     api_key_list = api_key.split(':')
     if len(api_key_list) != 2:
-        logging.error('не верный формат api_key: {}'.format(api_key))
+        logging.error('не верный формат api_key (login:key): {}'.format(
+            api_key
+        ))
         return
     login, key = api_key_list
     return UsersReport.query.filter_by(
@@ -40,11 +42,13 @@ def get_user_with_api_key(api_key):
 def request_loader(request):
     logging.debug('request_loader')
     # first, try to login using the api_key url arg
+    # Использовать исключительно через https
     api_key = request.args.get('api_key')
     user = get_user_with_api_key(api_key)
     if user:
         return user
     # next, try to login using Basic Auth
+    # Использовать исключительно через https
     api_key = request.headers.get('Authorization')
     if api_key:
         api_key = api_key.replace('Basic ', '', 1)
