@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from flask import json
 import logging
 from passlib.hash import pbkdf2_sha256
+from flask_login import UserMixin
 
 from app.settings import config
 
@@ -38,7 +39,7 @@ Base.query = Session.query_property()
 logging.debug('Создали Base')
 
 
-class UsersReport(Base):
+class UsersReport(UserMixin, Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     login = Column(String(20), unique=True, nullable=False)

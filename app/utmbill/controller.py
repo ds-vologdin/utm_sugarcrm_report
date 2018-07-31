@@ -58,7 +58,6 @@ def utmpays_statistic(year='', month='', last='year'):
         'date_begin': date_begin,
         'menu_url': '/audit/utmpays/',
     }
-    print(type_report)
     if type_report == 'month':
         return render_template_with_today_date('pays_month.html', context)
     return render_template_with_today_date('pays_year.html', context)
