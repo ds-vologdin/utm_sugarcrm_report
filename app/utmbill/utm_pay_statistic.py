@@ -29,8 +29,7 @@ def group_pays_by_date(pays_raw):
 
 
 def fetch_pays_from_utm(date_begin, date_end):
-    '''Получить данные из БД UTM
-    '''
+    ''' Получить данные из БД UTM '''
 
     date_begin_timestamp = get_timestamp_from_date(date_begin)
     date_end_timestamp = get_timestamp_from_date(date_end + timedelta(days=1))
@@ -38,10 +37,8 @@ def fetch_pays_from_utm(date_begin, date_end):
         PaymentTransaction.payment_enter_date,
         PaymentTransaction.payment_absolute
     ).filter(
-        PaymentTransaction.method == 5
-    ).filter(
-        PaymentTransaction.payment_enter_date >= date_begin_timestamp
-    ).filter(
+        PaymentTransaction.method == 5,
+        PaymentTransaction.payment_enter_date >= date_begin_timestamp,
         PaymentTransaction.payment_enter_date < date_end_timestamp
     ).all()
 
@@ -106,20 +103,20 @@ def calculate_pays_stat_periods(pays, report_periods):
     # Объединяем pays_stat_periods и balances_periods
     if not balances_periods:
         return pays_periods_dicts
-    for i in range(len(pays_periods_dicts)):
-        pays_periods_dicts[i].update(
+    for pays_period_dict, balance_period in zip(pays_periods_dicts, balances_periods):
+        pays_period_dict.update(
             {
-                'count_active': balances_periods[i].get('count', 0),
-                'avg_balance': balances_periods[i].get('avg', 0),
-                'avg_balance_all': balances_periods[i].get('avg_all', 0),
-                'sum_balance': balances_periods[i].get('summ', 0),
+                'count_active': balance_period.get('count', 0),
+                'avg_balance': balance_period.get('avg', 0),
+                'avg_balance_all': balance_period.get('avg_all', 0),
+                'sum_balance': balance_period.get('summ', 0),
             }
         )
     return pays_periods_dicts
 
 
 def calculate_summary_statistic_pays(pays_stat_periods, report_periods, last):
-    # Считаем статистику по всем платежам
+    ''' Считаем статистику по всем платежам '''
     summ_pay, count_pay = 0, 0
     for pay in pays_stat_periods:
         summ_pay += pay['summ']
@@ -149,12 +146,11 @@ def calculate_summary_statistic_pays(pays_stat_periods, report_periods, last):
 
 
 def fetch_balances_periods(report_periods):
-    '''Функция расчёта баланса по заданным периодам
-    '''
+    ''' Функция расчёта баланса по заданным периодам '''
     # Расчитываем только в случае если отчёт помесячный
     date_begin, date_end = report_periods[0]
     if (date_end - date_begin) < timedelta(days=28):
-        return None
+        return
 
     balances_dicts = []
     for date_begin, date_end in report_periods:
@@ -170,14 +166,10 @@ def fetch_balances_periods(report_periods):
         ).join(
             User, BalanceHistory.account_id == User.basic_account
         ).filter(
-            BalanceHistory.date >= timestamp_begin
-        ).filter(
-            BalanceHistory.date < timestamp_end
-        ).filter(
-            User.login.op('~')('^\d\d\d\d\d$')
-        ).filter(
-            BalanceHistory.out_balance >= 0
-        ).filter(
+            BalanceHistory.date >= timestamp_begin,
+            BalanceHistory.date < timestamp_end,
+            User.login.op('~')('^\d\d\d\d\d$'),
+            BalanceHistory.out_balance >= 0,
             BalanceHistory.out_balance < 15000
         ).all()
 
@@ -189,19 +181,14 @@ def fetch_balances_periods(report_periods):
         ).join(
             User, BalanceHistory.account_id == User.basic_account
         ).filter(
-            BalanceHistory.date >= timestamp_begin
-        ).filter(
-            BalanceHistory.date < timestamp_end
-        ).filter(
-            User.login.op('~')('^\d\d\d\d\d$')
-        ).filter(
-            BalanceHistory.out_balance > -15000
-        ).filter(
+            BalanceHistory.date >= timestamp_begin,
+            BalanceHistory.date < timestamp_end,
+            User.login.op('~')('^\d\d\d\d\d$'),
+            BalanceHistory.out_balance > -15000,
             BalanceHistory.out_balance < 15000
         ).all()
 
-        count, avg, summ = active_balance[0] if len(active_balance) == 1 \
-            else (0, 0, 0)
+        count, avg, summ = active_balance[0] if len(active_balance) == 1 else (0, 0, 0)
 
         avg_all = all_balance[0][0] if len(all_balance) == 1 else 0
 
