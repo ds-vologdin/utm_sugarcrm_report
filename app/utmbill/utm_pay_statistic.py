@@ -1,10 +1,11 @@
 from itertools import groupby
-from operator import itemgetter
-from sqlalchemy import func
 from datetime import date, timedelta
+from operator import itemgetter
+
+from sqlalchemy import func
 
 from .utm_db import session_utm
-from .utm_db import PaymentTransactions, BalanceHistory, Users
+from .models import PaymentTransaction, BalanceHistory, User
 from .helpers import get_timestamp_from_date
 
 
@@ -34,14 +35,14 @@ def fetch_pays_from_utm(date_begin, date_end):
     date_begin_timestamp = get_timestamp_from_date(date_begin)
     date_end_timestamp = get_timestamp_from_date(date_end + timedelta(days=1))
     pays_raw = session_utm.query(
-        PaymentTransactions.payment_enter_date,
-        PaymentTransactions.payment_absolute
+        PaymentTransaction.payment_enter_date,
+        PaymentTransaction.payment_absolute
     ).filter(
-        PaymentTransactions.method == 5
+        PaymentTransaction.method == 5
     ).filter(
-        PaymentTransactions.payment_enter_date >= date_begin_timestamp
+        PaymentTransaction.payment_enter_date >= date_begin_timestamp
     ).filter(
-        PaymentTransactions.payment_enter_date < date_end_timestamp
+        PaymentTransaction.payment_enter_date < date_end_timestamp
     ).all()
 
     return group_pays_by_date(pays_raw)
@@ -167,13 +168,13 @@ def fetch_balances_periods(report_periods):
             func.avg(BalanceHistory.out_balance),
             func.sum(BalanceHistory.out_balance),
         ).join(
-            Users, BalanceHistory.account_id == Users.basic_account
+            User, BalanceHistory.account_id == User.basic_account
         ).filter(
             BalanceHistory.date >= timestamp_begin
         ).filter(
             BalanceHistory.date < timestamp_end
         ).filter(
-            Users.login.op('~')('^\d\d\d\d\d$')
+            User.login.op('~')('^\d\d\d\d\d$')
         ).filter(
             BalanceHistory.out_balance >= 0
         ).filter(
@@ -186,13 +187,13 @@ def fetch_balances_periods(report_periods):
             func.avg(BalanceHistory.out_balance),
             func.sum(BalanceHistory.out_balance),
         ).join(
-            Users, BalanceHistory.account_id == Users.basic_account
+            User, BalanceHistory.account_id == User.basic_account
         ).filter(
             BalanceHistory.date >= timestamp_begin
         ).filter(
             BalanceHistory.date < timestamp_end
         ).filter(
-            Users.login.op('~')('^\d\d\d\d\d$')
+            User.login.op('~')('^\d\d\d\d\d$')
         ).filter(
             BalanceHistory.out_balance > -15000
         ).filter(

@@ -11,9 +11,9 @@ login_manager.login_view = 'auth.login'
 
 
 @login_manager.user_loader
-def user_loader(id):
+def user_loader(user_id):
     logging.debug('user_loader: {}'.format(id))
-    user_report = UsersReport.query.filter(UsersReport.id == id).first()
+    user_report = UsersReport.query.filter(UsersReport.id == user_id).first()
     if not user_report:
         return None
     return user_report
@@ -57,7 +57,6 @@ def request_loader(request):
         except TypeError as e:
             logging.error('base64.b64decode error: {} ({})'.format(e, api_key))
             api_key = None
-            pass
     user = get_user_with_api_key(api_key)
     if user:
         return user

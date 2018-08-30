@@ -2,8 +2,8 @@ from datetime import datetime, date, timedelta
 
 from .helpers import get_timestamp_from_date
 from .utm_db import session_utm
-from .utm_db import Users, BlocksInfo, ServiceLinks, ServicesData
-from .utm_db import TariffsHistory
+from .models import User, BlocksInfo, ServiceLink, ServicesDatum
+from .models import TariffsHistory
 
 
 def fetch_users_block_month(date_start, date_stop):
@@ -15,10 +15,10 @@ def fetch_users_block_month(date_start, date_stop):
     timestamp_end = get_timestamp_from_date(date_stop + timedelta(days=1))
     timestamp_expire = get_timestamp_from_date(date(2030, 1, 1))
     blocks = session_utm.query(
-        Users.id, Users.login, Users.full_name, Users.actual_address,
-        Users.mobile_telephone, BlocksInfo.start_date
+        User.id, User.login, User.full_name, User.actual_address,
+        User.mobile_telephone, BlocksInfo.start_date
     ).join(
-        BlocksInfo,  Users.basic_account == BlocksInfo.account_id
+        BlocksInfo, User.basic_account == BlocksInfo.account_id
     ).filter(
         BlocksInfo.start_date >= timestamp_begin
     ).filter(
@@ -26,37 +26,37 @@ def fetch_users_block_month(date_start, date_stop):
     ).filter(
         BlocksInfo.expire_date > timestamp_expire
     ).filter(
-        Users.login.op('~')('^\d\d\d\d\d$')
+        User.login.op('~')('^\d\d\d\d\d$')
     ).order_by(BlocksInfo.start_date).all()
 
-    users_id = [id for id, *block in blocks]
+    User_id = [id for id, *block in blocks]
 
     # Запрашиваем активные сервисные связки
-    services_users = session_utm.query(
-        Users.id, ServicesData.service_name, ServicesData.comment,
-        ServicesData.id
+    services_User = session_utm.query(
+        User.id, ServicesDatum.service_name, ServicesDatum.comment,
+        ServicesDatum.id
     ).join(
-        ServiceLinks, Users.basic_account == ServiceLinks.account_id
+        ServiceLink, User.basic_account == ServiceLink.account_id
     ).join(
-        ServicesData, ServiceLinks.service_id == ServicesData.id
+        ServicesDatum, ServiceLink.service_id == ServicesDatum.id
     ).filter(
-        Users.id.in_(users_id)
+        User.id.in_(User_id)
     ).filter(
-        ServicesData.is_deleted == 0
+        ServicesDatum.is_deleted == 0
     ).filter(
-        ServiceLinks.is_deleted == 0
+        ServiceLink.is_deleted == 0
     ).filter(
-        Users.is_deleted == 0
+        User.is_deleted == 0
     ).filter(
-        ServicesData.id != 614
-    ).order_by(Users.id).all()
+        ServicesDatum.id != 614
+    ).order_by(User.id).all()
 
-    users_block = []
+    User_block = []
     # Получаем тарифы пользователя и формируем список словарей с информацией
     # об ушёдшим в блок пользователям
     for block in blocks:
         services = [
-            services_user for id, *services_user in services_users
+            services_user for id, *services_user in services_User
             if id == block[0]
         ]
         service = ''
@@ -66,9 +66,9 @@ def fetch_users_block_month(date_start, date_stop):
             tarif_history = session_utm.query(
                 TariffsHistory.tariff_name, TariffsHistory.unlink_date
             ).join(
-                Users, TariffsHistory.account_id == Users.basic_account
+                User, TariffsHistory.account_id == User.basic_account
             ).filter(
-                Users.id == block[0]
+                User.id == block[0]
             ).order_by(TariffsHistory.unlink_date.desc()).all()
             service = tarif_history[0][0] if len(tarif_history) > 0 else ''
         else:
@@ -76,7 +76,7 @@ def fetch_users_block_month(date_start, date_stop):
             service_names = [ser[0] for ser in services]
             service = '; '.join(service_names)
 
-        users_block.append(
+        User_block.append(
             {
                 'login': block[1],
                 'user': block[2],
@@ -86,4 +86,4 @@ def fetch_users_block_month(date_start, date_stop):
                 'tarif': service,
             }
         )
-    return users_block
+    return User_block
